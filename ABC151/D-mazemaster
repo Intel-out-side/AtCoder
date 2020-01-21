@@ -1,0 +1,41 @@
+from collections import deque
+
+def bfs(x):
+    dist = [INF] * (H * W)
+    # [INF, INF, INF, .....] をH×W個
+    dist[x] = 0
+    stack = deque([(0, x)])
+    while stack:
+        v, s = stack.popleft()
+        for w, g in graph[s]:
+            if dist[g] > v + w:
+                # INFと比較している
+                dist[g] = v + w
+                stack.append((dist[g], g))
+
+    return dist
+
+H, W = map(int, input().split())
+S = [input() for _ in range(H)]
+
+INF = 1001001001
+graph = [[] for _ in range(H*W)]
+
+# スタート地点を決める
+for i in range(H):
+    for j in range(W):
+        for ni, nj in [(i-1, j), (i, j+1), (i+1, j), (i, j-1)]:
+            if 0 <= ni < H and 0 <= nj < W and S[ni][nj] != "#":
+                graph[W * i + j].append((1, W * ni + nj))
+
+answer = 0
+
+for i in range(H):
+    for j in range(W):
+        if S[i][j] == "#":
+            continue
+        else:
+            dist = bfs(i * W + j)
+            for k in range (H * W):
+                if dist[k] != INF:
+                    answer = max(answer, dist[k])
