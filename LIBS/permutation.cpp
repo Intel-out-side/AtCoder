@@ -3,8 +3,8 @@
 using namespace std;
 using ll = long long;
 
-vector<vector<ll>> permutation(vector<ll> v) {
-  vector<vector<ll>> perms;
+template <typename T> vector<vector<T>> permutation(vector<T> v) {
+  vector<vector<T>> perms;
   do {
     perms.push_back(v);
   } while (next_permutation(v.begin(), v.end()));

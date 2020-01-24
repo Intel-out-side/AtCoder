@@ -5,7 +5,7 @@ DONT FORGET
 */
 typedef long long ll;
 
-ll gcd(ll a, ll b) {
+template <typename T> T gcd(T a, T b) {
   if (a % b == 0) {
     return b;
   }
@@ -14,13 +14,13 @@ ll gcd(ll a, ll b) {
   }
 }
 
-ll lcm(ll a, ll b) {
+template <typename T> T lcm(T a, T b) {
   return a * b / gcd(a, b);
 }
 
-ll LCM(vector<ll> x) {
-  ll ans = lcm(x[0], x[1]);
-  for (ll i = 0; i < x.size(); i++) {
+template <typename T> T LCM(vector<T> x) {
+  T ans = lcm(x[0], x[1]);
+  for (T i = 0; i < x.size(); i++) {
     ans = lcm(ans, x[i]);
   }
   return ans;
