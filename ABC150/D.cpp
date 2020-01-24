@@ -25,12 +25,21 @@ ll LCM(vector<ll> x) {
   return ans;
 }
 
+ll reduce(ll x) {
+  while (x % 2 == 0) {
+    x /= 2;
+  }
+  return x;
+}
+
 int main() {
   ll N, M;
   cin >> N >> M;
   M *= 2;
   vector<ll> a(N);
   rep(i, N) cin >> a[i];
+
+  //rep(i, N) a[i] = reduce(a[i]);
 
   ll lcm = LCM(a), lcm_ = lcm;
   ll sum = 0, count = 1;
