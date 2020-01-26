@@ -1,20 +1,30 @@
 #include <bits/stdc++.h>
-#include <algorithm>
-#define rep(i, n) for(long long i = 0; i < n; i++)
+#define rep(i, n) for(unsigned long long i = 0; i < n; i++)
+#define MAX 2 * 1e9
 using namespace std;
-using ll = long long;
+using ll = unsigned long long;
 
 ll gcd(ll a, ll b) {
-  if (a % b == 0) {
-    return b;
+  if (a < b) {
+    ll tmp = a;
+    a = b;
+    b = tmp;
   }
-  else {
-    return (gcd(b, a%b));
+
+  ll r = a % b;
+  while ( r != 0 ) {
+    a = b;
+    b = r;
+    r = a % b;
   }
+
+  return b;
 }
 
 ll lcm(ll a, ll b) {
-  return a * b / gcd(a, b);
+  ll result = a * b / gcd(a, b);
+  if (result > MAX) return 0;
+  return result;
 }
 
 ll LCM(vector<ll> x) {
@@ -26,29 +36,51 @@ ll LCM(vector<ll> x) {
 }
 
 ll reduce(ll x) {
+  ll sum = 0;
   while (x % 2 == 0) {
+    sum++;
     x /= 2;
   }
-  return x;
+  return sum;
 }
 
 int main() {
   ll N, M;
   cin >> N >> M;
   M *= 2;
-  vector<ll> a(N);
+  vector<ll> a(N), reduced_a(N);
   rep(i, N) cin >> a[i];
 
-  //rep(i, N) a[i] = reduce(a[i]);
-
-  ll lcm = LCM(a), lcm_ = lcm;
-  ll sum = 0, count = 1;
-  while (lcm_ <= M) {
-    sum++;
-    lcm_ = lcm * (2*count + 1);
-    count++;
+  rep(i, N) reduced_a[i] = reduce(a[i]);
+  bool divisible_same = true;
+  rep(i, N - 1) {
+    if (reduced_a[i] != reduced_a[i+1]) divisible_same = false;
   }
 
-  cout << sum << endl;
-  return 0;
+  if (!divisible_same) {
+    cout << 0 << endl;
+    return 0;
+  }
+  else {
+    ll lcm = LCM(a), lcm_ = lcm;
+    if (lcm == 0) {
+      cout << 0 << endl;
+      return 0;
+    }
+    if (lcm > M) {
+      cout << 0 << endl;
+      return 0;
+    }
+    else {
+      ll sum = 0, count = 1;
+      while (lcm_ <= M) {
+        sum++;
+        lcm_ = lcm * (2*count + 1);
+        count++;
+      }
+
+      cout << sum << endl;
+      return 0;
+    }
+  }
 }
