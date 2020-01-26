@@ -8,8 +8,10 @@ ll HP = MAX;
 vector<P> candidates;
 
 vector<P> f(vector<P> x) {
+  ll len = x.size();
   ll minCost = MAX;
   ll sumDamage = -1;
+  sort(x.begin(), x.end());
   for (auto p : x) {
     if (p.first > HP) {
       sumDamage = p.first;
@@ -26,6 +28,7 @@ vector<P> f(vector<P> x) {
         x.push_back(P( p.first + q.first, p.second + q.second ));
       }
     }
+    for (ll i = 0; i < len; i++) x.erase(x.begin());
     return f(x);
   }
 }

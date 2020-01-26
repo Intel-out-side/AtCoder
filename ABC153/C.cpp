@@ -18,6 +18,8 @@ int main() {
   rep(i, N) cin >> H[i];
 
   sort(H.begin(), H.end());//小さい順
+  //いちいち最大値を求めていくと、計算量がO(N^2)になるので
+  //ソートして最大値がv[v.end()]にしたほうが早い
 
   rep(i, K) H.pop_back();
 
@@ -26,7 +28,6 @@ int main() {
   }
   else {
     rep(i, N - K) sum += H[i];
-    
     cout << sum << endl;
   }
   return 0;
