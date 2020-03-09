@@ -1,3 +1,7 @@
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
 const int mod = 1000000007;
 struct mint {
   ll x; // typedef long long ll;
@@ -62,3 +66,26 @@ struct combination {
     return fact[n]*ifact[k]*ifact[n-k];
   }
 };
+
+int main() {
+  ll X, Y;
+  cin >> X >> Y;
+
+  if ((X+Y) % 3 != 0) {
+    cout << 0 << endl;
+    return 0;
+  }
+
+  int m = (2 * X - Y) / 3;
+  int n = X - 2 * m;
+
+  if (m < 0 || n < 0) {
+    cout << 0 << endl;
+    return 0;
+  }
+
+  combination c(n+m);
+  mint ans = c(n+m, n);
+  cout << ans.x << endl;
+  return 0;
+}

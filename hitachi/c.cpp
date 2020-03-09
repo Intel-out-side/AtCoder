@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
+
 class DFS {
 public:
   //　グラフの隣接リスト表現
@@ -114,3 +115,15 @@ private:
     return -1;
   }
 };
+
+int main() {
+  ll N;
+  cin >> N;
+  DFS d = DFS(N);
+  d.graph_init();
+
+  for (ll i = 0; i < N; i++) {
+    
+  }
+  return 0;
+}
