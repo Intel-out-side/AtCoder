@@ -1,11 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
-
 #define MAX 1000100100LL
 using ll = long long;
 using Graph = vector<vector<ll>>;
+
+/*
+  全点間の最短距離を求める際につかえる
+  O(N^3)の計算量になるので、入力の内容に注意
+*/
 class WF {
 public:
   Graph g;

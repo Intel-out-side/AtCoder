@@ -1,10 +1,19 @@
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using P = pair<ll, ll>;
 
-/*
-  計算量:O(nloglogn)
-*/
+template <typename T> T gcd(T a, T b) {
+  if (a % b == 0) {
+    return b;
+  }
+  else {
+    return (gcd(b, a%b));
+  }
+}
+
 struct Sieve {
-  using P = pair<ll, ll>;
-  ll n;
+  int n;
   vector<ll> f, primes;
   Sieve(ll n = 1): n(n), f(n + 1) {
     f[0] = f[1] = -1;
@@ -46,3 +55,19 @@ struct Sieve {
       return res;
     }
   };
+
+int main() {
+  ll A, B;
+  cin >> A >> B;
+
+  ll g = gcd(A, B);
+
+  Sieve s = Sieve(g);
+
+  vector<P> f = s.factorPower(g);
+
+  ll ans = f.size() + 1;
+
+  cout << ans << endl;
+  return 0;
+}

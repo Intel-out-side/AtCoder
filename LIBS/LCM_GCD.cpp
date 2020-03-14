@@ -6,12 +6,7 @@ DONT FORGET
 typedef long long ll;
 
 template <typename T> T gcd(T a, T b) {
-  if (a % b == 0) {
-    return b;
-  }
-  else {
-    return (gcd(b, a%b));
-  }
+  return y ? gcd(y, x%y) : x;
 }
 
 template <typename T> T lcm(T a, T b) {

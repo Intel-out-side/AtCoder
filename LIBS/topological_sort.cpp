@@ -2,7 +2,7 @@
 using namespace std;
 using ll = long long;
 
-class BFS {
+class TopologicalSort {
 public:
   //グラフの隣接リスト表現
   using Graph = vector<vector<ll>>;
@@ -16,13 +16,21 @@ public:
   vector<ll> deg;
   //始点からの距離を格納するvector
   vector<ll> dist;
+  //やるべき仕事の順番に入っているvector
+  vector<ll> task;
+  //ノードiに入ってくる有向辺の数
+  vector<ll> indeg;
+  //タスクが終わったかどうか
+  vector<bool> isCompleted;
 
 
-  BFS(ll n) {
+  TopologicalSort(ll n) {
     num_of_nodes = n;
     G = vector<vector<ll>>(n);
     deg = vector<ll>(n, 0);
     dist = vector<ll>(n, INF);
+    indeg = vector<ll>(n, 0);
+    isCompleted = vector<bool>(n, false);
   }
 
   //distを格納するvectorのgetter
@@ -56,6 +64,7 @@ public:
 
       G[a].push_back(b);
       deg[a]++;
+      indeg[b]++;
       /*
       //O(N)かかるので外したほうが良いかも
       auto itr = find(G[a].begin(), G[a].end(), b);
@@ -71,73 +80,50 @@ public:
     queue<ll> q;
     dist[start] = 0;
     q.push(start);
+    isCompleted[start] = true;
 
     while(!q.empty()) {
       ll now = q.front(); q.pop();
+      task.push_back(now);
       for (ll i = 0; i < G[now].size(); i++) {
         ll v = G[now][i]; //今の頂点に隣接する頂点ｖ
-        if (dist[v] != INF) continue;
-
-        dist[v] = dist[now]+1;
-        q.push(v);
+        indeg[v]--;
+        if (indeg[v] == 0 && !isCompleted[v]) {
+          isCompleted[v] = true;
+          q.push(v);
+        }
       }
+    }
+  }
+
+  void tsort() {
+    for (ll i = 0; i < num_of_nodes; i++) indeg[i] = 0;
+
+    for (ll i = 0; i < num_of_nodes; i++) {
+      for (ll j = 0; j < G[i].size(); j++) {
+        int v = G[i][j];
+        indeg[v]++;
+      }
+    }
+
+    for (ll u = 0; u < num_of_nodes; u++) {
+      if (indeg[u] == 0 && !isCompleted[u]) bfs(u);
     }
   }
 };
 
-// 以下はABC151のD問題の例
-// 入力が
-/*
-  ..#..
-  .....
-  .###.
-  みたいな感じで与えられる
-*/
 int main() {
-  int H, W;
-  cin >> H >> W;
+  ll V, E;
+  cin >> V >> E;
 
-  vector<string> G(H);
-  for (int i = 0; i < H; i++) {
-    cin >> G[i];
+  TopologicalSort ts = TopologicalSort(V);
+
+  ts.DAG_init(E);
+  ts.tsort();
+
+  for (auto item : ts.task) {
+    cout << item << endl;
   }
 
-  BFS b = BFS(H * W);
-
-  vector<int> dh = {0, -1, 0, 1};
-  vector<int> dw = {1, 0, -1, 0};
-
-
-  for (int h = 0; h < H; h++) {
-    for (int w = 0; w < W; w++) {
-      if (G[h][w] == '#') continue;
-
-      for (int i = 0; i < 4; i++) {
-        int w_ = w + dw[i], h_ = h + dh[i];
-        if (w_ < 0 || h_ < 0 || h_ >= H || w_ >= W) continue;
-
-        if (G[h_][w_] == '.') b.G[W * h + w].push_back(W * h_ + w_);
-      }
-    }
-  }
-
-  vector<vector<ll>> setup_graph = b.get_graph();
-  vector<ll> init_dist = b.get_dist();
-
-  int max = -100;
-  for (int i = 0; i < H*W; i++) {
-    b.bfs(i);
-    vector<ll> dists = b.get_dist();
-
-    for (int j = 0; j < dists.size(); j++) {
-      if (dists[j] == INF) continue;
-      max = max < dists[j] ? dists[j] : max;
-    }
-    b.G = setup_graph;
-    b.dist = init_dist;
-  }
-
-  cout << max << endl;
   return 0;
-
 }
