@@ -37,7 +37,7 @@ int main() {
         int sj = q.front().second;
         q.pop(); //popしないと無限ループになる
 
-        for(int dif = 0; i < 4; i++) {
+        for(int dif = 0; dif < 4; dif++) {
           int tgt_x = si + di[dif];
           int tgt_y = sj + dj[dif];
 

@@ -2,13 +2,6 @@
 using namespace std;
 using ll = long long;
 
-//Sieveを使うとTLEする(O(NloglogN))場合があるのでこっちを使うとよい。
-//素因数分解して各因数が何乗されているかを返す
-/*
-  実行時間：O(√n)
-  @param n: ｘを素因数分解する関数
-  @return : 1を含まない素因数の集合(e.g. 12 -> (2,2), (3,1))
-*/
 vector<pair<ll, ll>> factorize(ll n) {
   vector<pair<ll, ll>> res;
   //√n までを見れば良いので終了条件がi^2<=nになる
@@ -26,5 +19,24 @@ vector<pair<ll, ll>> factorize(ll n) {
 }
 
 int main() {
+  ll X;
+  cin >> X;
 
+  ll A = 0;
+
+  while (true) {
+    ll B_5 = A * A * A * A * A - X;
+
+    vector<pair<ll, ll>> fact = factorize(B_5);
+
+    if (fact[0].second == 5) {
+      cout << A << " " << fact[0].first << endl;
+      break;
+    }
+
+    A++;
+
+  }
+
+  return 0;
 }

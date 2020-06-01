@@ -2,6 +2,9 @@
 using namespace std;
 using ll = long long;
 
+ll N, M;
+vector<ll> H;
+
 class DFS {
 public:
   //　グラフの隣接リスト表現
@@ -19,6 +22,8 @@ public:
   // 隣接リスト表現のリスト
   Graph G;
 
+  vector<bool> is_good_peak;
+
   DFS(ll n) {
     num_of_nodes = n;
     G = vector<vector<ll>>(num_of_nodes);
@@ -27,6 +32,7 @@ public:
     size_of_id = vector<ll>(num_of_nodes, 0);
     deg = vector<ll>(num_of_nodes, 0);
     color = vector<ll>(num_of_nodes, WHITE);
+    is_good_peak = vector<bool>(num_of_nodes, true);
   }
 
   Graph get_graph() { return G; }
@@ -38,6 +44,9 @@ public:
   ll get_deg_of(ll ith_node) { return deg[ith_node]; }
 
   ll get_size_of_id(ll id) { return size_of_id[id]; }
+
+  vector<bool> get_good_peaks() {return is_good_peak;}
+
 
   void graph_init(ll m) {
     for (ll i = 0; i < m; i++) {
@@ -68,6 +77,16 @@ public:
     for (ll next_v : G[v]) {
       if (seen[next_v]) continue;
       dfs(next_v, id);
+    }
+  }
+
+  void dfs(ll v, ll tgt_h, ll tgt_num) {
+    seen[v] = true;
+    if (H[v] >= tgt_h && (v != tgt_num)) is_good_peak[tgt_num] = false;
+
+    for (ll next_v : G[v]) {
+      if (seen[next_v]) continue;
+      dfs(next_v, tgt_h, tgt_num);
     }
   }
 
@@ -115,3 +134,26 @@ private:
     return -1;
   }
 };
+
+int main() {
+  cin >> N >> M;
+  H = vector<ll>(N);
+  for (ll i = 0; i < N; i++) cin >> H[i];
+
+  DFS d = DFS(N);
+  d.graph_init(M);
+
+  for (ll i = 0; i < N; i++) {
+    d.dfs(i, H[i], i);
+  }
+
+  vector<bool> is_good_peak = d.get_good_peaks();
+
+  ll ans = 0;
+  for (bool item : is_good_peak) {
+    if (item) ans++;
+  }
+
+  cout << ans << endl;
+  return 0;
+}
