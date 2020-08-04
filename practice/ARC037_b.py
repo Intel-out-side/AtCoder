@@ -1,22 +1,35 @@
 N, M = list(map(int, input().split()))
 
-connections = [[0 for _ in range(N)] for _ in range(N)]
-
-visited = [[False for _ in range(N)] for _ in range(N)]
+#隣接リスト表現
+connection = [[] for _ in range(N)]
 
 for i in range(M):
-    v1, v2 = list(map(int, input().split()))
+    u, v = list(map(int, input().split()))
+    connection[u-1].append(v-1)
+    connection[v-1].append(u-1)
 
-    connections[v1-1][v2-1] = 1
-    connections[v2-1][v1-1] = 1
+#すでに訪問されたかどうか
+visited = [False] * N
 
-def dfs(i, j):
+#木の個数のカウンター
+counter = 0
 
+def dfs(now, prev):
+    global flag
+    visited[now] = True
+
+    for next in connection[now]:
+        if next != prev:
+            if visited[next] == True:
+                flag = False
+            else:
+                dfs(next, now)
 
 for i in range(N):
-    for j in range(i+1, N):
+    if not visited[i]:
+        flag = True
+        dfs(i, -1)
+        if flag:
+            counter += 1
 
-        if connections[i][j] == 0:
-            continue
-
-        dfs(i)
+print(counter)
