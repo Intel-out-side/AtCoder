@@ -4,6 +4,9 @@ class UnionFind():
         self.parent = [i for i in range(n)]
         self.rank = [0 for i in range(n)]
 
+    def getParent(self):
+        return [self.find(i) for i in range(N)]
+
     def find(self, x):
         if self.parent[x] == x:
             return x

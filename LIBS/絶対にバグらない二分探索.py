@@ -11,7 +11,8 @@ mid = None
 found = False
 
 #終了したときに left|見つけたい値|rightの様に挟まれる
-#またはf(mid)==見つけたい値で終わる
+#WARNING: 探索区間内に見つけたい値が無い場合は例外処理が必要
+#WARNING: リストの先頭が条件を満たす値になっている場合例外処理が必要
 while left+1 < right:
     mid = (left + right)//2
 

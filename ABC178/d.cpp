@@ -1,3 +1,7 @@
+#include <bits/stdc++.h>
+using ll = long long;
+using namespace std;
+
 const int mod = 1000000007;
 struct mint {
   ll x; // typedef long long ll;
@@ -62,3 +66,24 @@ struct combination {
     return fact[n]*ifact[k]*ifact[n-k];
   }
 };
+
+int main() {
+    ll S;
+    cin >> S;
+    if (S < 3) {
+      cout << 0 << endl;
+      return 0;
+    }
+    ll boxes = S / 3;
+    mint ans = mint(0);
+    combination nCr = combination(S);
+    for (ll i = 2; i <= boxes; i++) {
+      ll ball = S - i * 3;
+      ans = ans + nCr(ball + i - 1, ball);
+    }
+
+    ans = ans + 1;
+
+    cout << ans.x << endl;
+    return 0;
+}

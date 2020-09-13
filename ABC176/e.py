@@ -1,6 +1,6 @@
 import pprint
 H, W, M = map(int, input().split())
-bombs = [[0 for _ in range(W)] for _ in range(H)]
+bombs = set()
 hCount = [0]*H
 vCount = [0]*W
 
@@ -9,18 +9,21 @@ for i in range(M):
     h -= 1; w -= 1;
     hCount[h] += 1
     vCount[w] += 1
-    bombs[h][w] = 1
+    bombs.add((h, w))
 
 hMax = max(hCount)
 vMax = max(vCount)
-hMaxIndex = [i for i, x in enumerate(hCount) if x==max(hCount)]
-vMaxIndex = [i for i, x in enumerate(vCount) if x==max(vCount)]
+hMaxIndex = [i for i, x in enumerate(hCount) if x==hMax]
+vMaxIndex = [i for i, x in enumerate(vCount) if x==vMax]
 
 ans = -1
-for y in hMaxIndex:
-    for x in vMaxIndex:
-        if bombs[y][x]:
-            ans = max(hMax + vMax - 1, ans)
+for x in vMaxIndex:
+    for y in hMaxIndex:
+        #continueするのはたかだかM回
+        
+        if (y, x) in bombs:
+            continue
         else:
-            ans = max(hMax+vMax, ans)
-print(ans)
+            print(hMax + vMax)
+            exit()
+print(hMax + vMax - 1)
