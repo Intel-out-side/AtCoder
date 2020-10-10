@@ -69,7 +69,7 @@ int main() {
   cin >> N;
   ll n, r;
   cin >> n >> r;
-  mint a = mint(0)
+  mint a = mint(0);
   combination nCr = combination(N);
 
   //aにnCrを足したい場合

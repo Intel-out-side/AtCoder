@@ -1,11 +1,4 @@
-"""
-クラスカル法による最小(最大)全域木を求めるコードです。
-O(|E|log|E|)≒O(|E|log|V|)です
-"""
-
-V, E = map(int, input().split())
-edges = [None] * E
-
+from collections import Counter
 class UnionFind():
     def __init__(self, n):
         self.n = n
@@ -50,29 +43,15 @@ class UnionFind():
     def sizeOfGroup(self, x):
         return len(self.memsInGroup(x))
 
-class Edge:
-    def __init__(self, u, v, cost):
-        self.u = u
-        self.v = v
-        self.cost = cost
 
-for i in range(E):
-    v1, v2, cost = map(int, input().split())
-    edges[i] = Edge(v1, v2, cost)
-    #edges[i] = Edge(v1-1, v2-1, cost)
+N, M = map(int, input().split())
 
-edges.sort(key = lambda x:x.cost)
-#最大全域木なら reverse = Trueにする
+uf = UnionFind(N)
+for i in range(M):
+    a, b = map(int, input().split())
+    uf.unite(a-1, b-1)
 
-def kruskal():
-    uf = UnionFind(V)
-    res = 0
-
-    for e in edges:
-        if not uf.isSame(e.u, e.v):
-            uf.unite(e.u, e.v)
-            res += e.cost
-
-    return res
-
-print(kruskal())
+# print(uf.getParent())
+groups = len(Counter(uf.getParent()).keys())
+ans = groups - 1
+print(ans)
