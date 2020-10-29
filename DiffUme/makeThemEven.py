@@ -18,7 +18,7 @@ N = 0
 
 moves = []
 
-for i in range(0, numOfOdds-1, 2):
+for i in range(0, numOfOdds, 2):
 
     sx, sy = odds[i]
     gx, gy = odds[i+1]

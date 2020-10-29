@@ -51,8 +51,6 @@ class SegmentTree:
             rres = self.query(a, b, 2*k+2, (L+R)>>1, R)
             return self.f(lres, rres)
 
-
-
 if __name__ == "__main__":
     n, q = map(int, input().split())
     ans = []
